@@ -1,235 +1,216 @@
-jQuery(document).ready(function($) {
+/**	
+	* Template Name: Kevin
+	* Version: 1.0	
+	* Template Scripts
+	* Author: MarkUps
+	* Author URI: http://www.markups.io/
 
-/*------------------------------------------------
-            DECLARATIONS
-------------------------------------------------*/
-    
-    var loader              = $('#loader');
-    var loader_container    = $('#preloader');
-    var scroll = $(window).scrollTop();  
-    var scrollup = $('.backtotop');
-    var menu_toggle = $('.menu-toggle');
-    var dropdown_toggle = $('.main-navigation button.dropdown-toggle');
-    var nav_menu = $('.main-navigation ul.nav-menu');
-    var service_slider = $('#services .section-content');
-    var partners_logo = $('.logo-slider');
+	Custom JS
+	
+	1. FIXED MENU
+	2. FEATURED SLIDE ( TYPED SLIDER )
+	3. SKILL PROGRESS BAR
+	4. MENU SMOOTH SCROLLING
+	5. MOBILE MENU CLOSE  
+	6. PORTFOLIO GALLERY
+	7. PORTFOLIO POPUP VIEW ( IMAGE LIGHTBOX )
+	8. CLIENT TESTIMONIALS ( SLICK SLIDER )
+	9. BUTTON SMOOTH SCROLL ( VIEW MY WORK )
+	
+**/
 
-/*------------------------------------------------
-           PRELOADER
-------------------------------------------------*/
 
-   loader_container.delay(1000).fadeOut();
-   loader.delay(1000).fadeOut("slow");
 
-/*------------------------------------------------
-            BACK TO TOP
-------------------------------------------------*/
+(function( $ ){
 
-    $(window).scroll(function() {
-        if ($(this).scrollTop() > 1) {
-            scrollup.css({bottom:"25px"});
-        } 
-        else {
-            scrollup.css({bottom:"-100px"});
-        }
-    });
 
-    scrollup.click(function() {
-        $('html, body').animate({scrollTop: '0px'}, 800);
-        return false;
-    });
+	/* ----------------------------------------------------------- */
+	/*  2. FIXED MENU
+	/* ----------------------------------------------------------- */
 
-/*------------------------------------------------
-            MAIN NAVIGATION
-------------------------------------------------*/
 
-    $('#sidr-left-top-button').sidr({
-        name: 'sidr-left-top',
-        timing: 'ease-in-out',
-        speed: 500,
-        side: 'right',
-        source: '.left'
-    });
+	jQuery(window).bind('scroll', function () {
 
-    $('#primary-menu .menu-item-has-children > a > svg').click(function(event) {
-        event.preventDefault();
-        $(this).parent().find('.sub-menu').first().slideToggle();
-    })
+    if ($(window).scrollTop() > 100) {
 
-    menu_toggle.click(function() {
-        $(this).toggleClass('active');
-    });
+        $('#mu-header').addClass('mu-fixed-nav');
+        
+	    } else {
+	        $('#mu-header').removeClass('mu-fixed-nav');
+	    }
+	});
 
-    $('.main-navigation ul li.search-menu a').click(function(event) {
-        event.preventDefault();
-        $(this).toggleClass('search-active');
-        $('.main-navigation #search').fadeToggle();
-        $('.main-navigation .search-field').focus();
-    });
+		
+	/* ----------------------------------------------------------- */
+	/*  2. FEATURED SLIDE (TYPED SLIDER)
+	/* ----------------------------------------------------------- */
 
-    $(document).keyup(function(e) {
-        if (e.keyCode === 27) {
-            $('.main-navigation ul li.search-menu a').removeClass('search-active');
-            $('.main-navigation #search').fadeOut();
-        }
-    });
+		var typed = new Typed('#typed', {
+		    stringsElement: '#typed-strings',
+		    typeSpeed: 20,
+		    backSpeed: 20,
+		    startDelay: 1000,
+		    loop: true,
+		    loopCount: Infinity
+		});
 
-    $(document).click(function (e) {
-        var container = $("#masthead");
-        if (!container.is(e.target) && container.has(e.target).length === 0) {
-            $('#site-navigation').removeClass('menu-open');
-            $('#primary-menu').slideUp();
-            $('.menu-overlay').removeClass('active');
-            $('.main-navigation ul li.search-menu a').removeClass('search-active');
-            $('.main-navigation #search').fadeOut();
-        }
-    });
+		
+	/* ----------------------------------------------------------- */
+	/*  3. SKILL PROGRESS BAR
+	/* ----------------------------------------------------------- */
 
-    $(window).scroll(function() {
-        if ($(this).scrollTop() > 1) {
-            $('#masthead').addClass('nav-shrink');
-        } 
-        else {
-            $('#masthead').removeClass('nav-shrink');
-        }
-    });
+		$('.mu-skill-progress-bar').appear(function() {
 
-/*------------------------------------------------
-            SKILLS
-------------------------------------------------*/
+		 	$('.mu-html5-bar').LineProgressbar({
+				percentage: 95,
+				triggerOnce: true
+			});
 
-$('.skill-innerbox').each( function() {
-    var skill_value = $(this).attr( 'skill-value' );
-    $(this).css({ 'width' : skill_value });
-});
+			$('.mu-css-bar').LineProgressbar({
+				percentage: 90,
+				triggerOnce: true
+			});
 
-/*------------------------------------------------
-            SLICK SLIDER
-------------------------------------------------*/
+			$('.mu-photoshop-bar').LineProgressbar({
+				percentage: 85,
+				triggerOnce: true
+			});
 
-service_slider.slick({
-    responsive: [
-        {
-            breakpoint: 992,
-                settings: {
-                    slidesToShow: 2
-                }
-            },
-        {
-            breakpoint: 567,
-                settings: {
-                slidesToShow: 1
-            }
-        }
-    ]
-});
+			$('.mu-wordpress-bar').LineProgressbar({
+				percentage: 80,
+				triggerOnce: true
+			});
 
-partners_logo.slick({
-    responsive: [
-        {
-        breakpoint: 1200,
-            settings: {
-                slidesToShow: 4
-            }
-        },
-        {
-        breakpoint: 1024,
-            settings: {
-                slidesToShow: 3
-            }
-        },
-        {
-        breakpoint: 767,
-            settings: {
-                slidesToShow: 2         
-            }
-        },
-        {
-        breakpoint: 567,
-            settings: {
-                slidesToShow: 1
-            }
-        }
-    ]
-});
+			$('.mu-jquery-bar').LineProgressbar({
+				percentage: 55,
+				triggerOnce: true
+			});
 
-/*------------------------------------------------
-                PHOTO GALLERY
-------------------------------------------------*/
+		});
 
-    $('.grid').imagesLoaded( function() {
-        $('.grid').isotope({
-            itemSelector: '.grid-item'
-        });
-    });
 
-    var $container = $('.grid');
-                
-    $('nav.portfolio-filter ul a').on('click', function() {
-        var selector = $(this).attr('data-filter');
-        $container.isotope({ filter: selector });
-        $('nav.portfolio-filter ul li').removeClass('active');
-        $(this).parent().addClass('active');
-        return false;
-    });
 
-    isotope = function () {
-        $container.isotope({
-            resizable: true,
-            itemSelector: '.grid-item',
-            layoutMode : 'masonry',
-            gutter: 0
-        });
-    };
-    isotope();
+	/* ----------------------------------------------------------- */
+	/*  4. MENU SMOOTH SCROLLING
+	/* ----------------------------------------------------------- */ 
 
-/*------------------------------------------------
-                MAGNIFIC POPUP
-------------------------------------------------*/
+		//MENU SCROLLING WITH ACTIVE ITEM SELECTED
 
-    $('.gallery-popup').magnificPopup( {
-        delegate:'.popup', type:'image', tLoading:'Loading image #%curr%...', 
-        gallery: {
-            enabled: true, navigateByImgClick: true, preload: [0, 1]
-        }
-        , image: {
-            tError:'<a href="%url%">The image #%curr%</a> could not be loaded.', titleSrc:function(item) {
-                return item.el.attr('title');
-            }
-        }
-    });
+		// Cache selectors
+		var lastId,
+		topMenu = $(".mu-menu"),
+		topMenuHeight = topMenu.outerHeight()+13,
+		// All list items
+		menuItems = topMenu.find('a[href^=\\#]'),
+		// Anchors corresponding to menu items
+		scrollItems = menuItems.map(function(){
+		  var item = $($(this).attr("href"));
+		  if (item.length) { return item; }
+		});
 
-/*------------------------------------------------
-            KEYBOARD NAVIGATION
-------------------------------------------------*/
-if( $(window).width() < 1024 ) {
-    $( '#primary-menu > li:last-child' ).bind( 'keydown', function(e) {
-        if( e.which === 9 ) {
-            e.preventDefault();
-            $('#masthead').find('.menu-toggle').focus();
-        }
-    });
-}
-else {
-    $( '#primary-menu > li:last-child' ).unbind('keydown');
-}
+		// Bind click handler to menu items
+		// so we can get a fancy scroll animation
+		menuItems.click(function(e){
+		  var href = $(this).attr("href"),
+		      offsetTop = href === "#" ? 0 : $(href).offset().top-topMenuHeight+22;
+		  jQuery('html, body').stop().animate({ 
+		      scrollTop: offsetTop
+		  }, 1500);
+		  e.preventDefault();
+		});
 
-$(window).resize(function() { 
-    if( $(window).width() < 1024 ) {
-        $( '#primary-menu > li:last-child' ).bind( 'keydown', function(e) {
-            if( e.which === 9 ) {
-                e.preventDefault();
-                $('#masthead').find('.menu-toggle').focus();
-            }
-        });
-    }
-    else {
-        $( '#primary-menu > li:last-child' ).unbind('keydown');
-    }
-});
+		// Bind to scroll
+		jQuery(window).scroll(function(){
+		   // Get container scroll position
+		   var fromTop = $(this).scrollTop()+topMenuHeight;
+		   
+		   // Get id of current scroll item
+		   var cur = scrollItems.map(function(){
+		     if ($(this).offset().top < fromTop)
+		       return this;
+		   });
+		   // Get the id of the current element
+		   cur = cur[cur.length-1];
+		   var id = cur && cur.length ? cur[0].id : "";
+		   
+		   if (lastId !== id) {
+		       lastId = id;
+		       // Set/remove active class
+		       menuItems
+		         .parent().removeClass("active")
+		         .end().filter("[href=\\#"+id+"]").parent().addClass("active");
+		   }           
+		});
 
-/*------------------------------------------------
-                END JQUERY
-------------------------------------------------*/
 
-});
+	/* ----------------------------------------------------------- */
+	/*  5. MOBILE MENU CLOSE 
+	/* ----------------------------------------------------------- */ 
+
+		jQuery('.mu-menu').on('click', 'li a', function() {
+		  $('.in').collapse('hide');
+		});
+
+
+	/* ----------------------------------------------------------- */
+	/*  6. PORTFOLIO GALLERY
+	/* ----------------------------------------------------------- */ 
+		$('.filtr-container').filterizr();
+
+		//Simple filter controls
+
+	    $('.mu-simplefilter li').click(function() {
+	        $('.mu-simplefilter li').removeClass('active');
+	        $(this).addClass('active');
+	    });
+
+	/* ----------------------------------------------------------- */
+	/*  7. PORTFOLIO POPUP VIEW ( IMAGE LIGHTBOX )
+	/* ----------------------------------------------------------- */ 
+
+	$('.mu-filter-imglink').magnificPopup({
+	  type: 'image',
+	  mainClass: 'mfp-fade',
+	  gallery:{
+	    enabled:true
+	  }
+	});
+
+	/* ----------------------------------------------------------- */
+	/*  8. CLIENT TESTIMONIALS (SLICK SLIDER)
+	/* ----------------------------------------------------------- */
+
+		$('.mu-testimonial-slide').slick({
+		  arrows: false,
+		  dots: true,
+		  infinite: true,
+		  speed: 500,
+		  autoplay: true,
+		  cssEase: 'linear'
+		});
+
+
+	/* ----------------------------------------------------------- */
+	/*  9. BUTTON SMOOTH SCROLL ( VIEW MY WORK )
+	/* ----------------------------------------------------------- */
+
+		$('.view-my-work-btn').on('click',function (e) {
+		    e.preventDefault();
+		    var target = this.hash,
+		    $target = $(target);
+		    $('html, body').stop().animate({
+		        'scrollTop': $target.offset().top
+		    }, 1000, 'swing', function () {
+		        window.location.hash = target;
+			});
+		});
+
+
+
+	
+})( jQuery );
+
+
+
+  
+	
